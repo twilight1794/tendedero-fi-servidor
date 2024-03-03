@@ -14,14 +14,15 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os, sys
 
-# Servicio
+load_dotenv()
+
+# API settings
 SECRET_KEY = os.environ['LUA_SECRET_KEY']
 DEBUG = bool(os.environ.get('LUA_DEBUG'))
-ALLOWED_HOSTS = os.environ['LUA_ALLOWED_HOSTS'].split(',')
+ALLOWED_HOSTS = os.environ.get('LUA_ALLOWED_HOSTS').split(',')
 APPEND_SLASH = False
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -33,6 +34,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'tendedero.middleware.CorsMiddleware'
 ]
 ROOT_URLCONF = 'tendedero.urls'
 TEMPLATES = [
@@ -52,7 +54,6 @@ TEMPLATES = [
 ]
 WSGI_APPLICATION = 'tendedero.wsgi.application'
 
-
 # Database
 DATABASES = {
     'default': {
@@ -60,7 +61,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -85,3 +85,14 @@ USE_I18N = True
 USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Files
+BASE_DIR = Path(__file__).resolve().parent.parent
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_POST_ROOT = os.path.join(MEDIA_ROOT, 'posts')
+MEDIA_PROFILE_ROOT = os.path.join(MEDIA_ROOT, 'profiles')
+
+for d in (MEDIA_ROOT, MEDIA_POSTS_ROOT, MEDIA_PROFILE_ROOT):
+    if not os.path.exists(d):
+        os.mkdir(d)
+
