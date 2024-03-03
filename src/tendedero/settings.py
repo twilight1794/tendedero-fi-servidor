@@ -15,11 +15,12 @@ from dotenv import load_dotenv
 import os, sys
 
 load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # API settings
-SECRET_KEY = os.environ['LUA_SECRET_KEY']
-DEBUG = bool(os.environ.get('LUA_DEBUG'))
-ALLOWED_HOSTS = os.environ.get('LUA_ALLOWED_HOSTS').split(',')
+SECRET_KEY = os.environ['TENDEDERO_SECRET_KEY']
+DEBUG = bool(os.environ.get('TENDEDERO_DEBUG'))
+ALLOWED_HOSTS = os.environ.get('TENDEDERO_ALLOWED_HOSTS', '').split(',')
 APPEND_SLASH = False
 
 # Application definition
@@ -87,12 +88,10 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Files
-BASE_DIR = Path(__file__).resolve().parent.parent
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.environ.get('TENDEDERO_MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
 MEDIA_POST_ROOT = os.path.join(MEDIA_ROOT, 'posts')
 MEDIA_PROFILE_ROOT = os.path.join(MEDIA_ROOT, 'profiles')
 
-for d in (MEDIA_ROOT, MEDIA_POSTS_ROOT, MEDIA_PROFILE_ROOT):
+for d in (MEDIA_ROOT, MEDIA_POST_ROOT, MEDIA_PROFILE_ROOT):
     if not os.path.exists(d):
         os.mkdir(d)
-
